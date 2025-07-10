@@ -1,18 +1,23 @@
-import java.util.Random;
+package item;
 
-public class Potion extends Item{
+import Game.Inventory;
+import Game.Player;
+import living.heroes.Hero;
+import utils.RandomUtil;
+
+public class Potion extends Item {
     //Variables
     double increasedValue; //Random starter value to increase statistics
 
     //Functions
     //Constructor
-    public Potion(String item_name, double item_market_price, int item_min_level, double increasedValue) {
-        super(item_name, item_market_price, item_min_level);
-        this.increasedValue = increasedValue;
+    public Potion(String itemName) {
+        super(itemName);
+        this.increasedValue = RandomUtil.randomStat(5, 25); // Stat increase between 5–25
     }
 
-    public void increase_random_statistic(Hero hero) {
-        int stat = (int) (Math.random() * 6);// 0: strength, 1: dexterity, 2: agility, 3: magicPower, 4: Money, 5: Experience
+    public void increaseRandomStatistic(Hero hero) {
+        int stat = (int) (Math.random() * 6); // 0: strength, 1: dexterity, 2: agility, 3: magicPower, 4: Money, 5: Experience
         switch (stat) {
             case 0:
                 hero.setStrength(hero.getStrength() + increasedValue);
@@ -41,9 +46,17 @@ public class Potion extends Item{
         }
     }
 
-    public void destroy_when_used(Player player) {
-        //Removes potion from inventory of Player
-        player.getInventory().remove(this);
-        System.out.println("Potion " + this.getItem_name() + " destroyed after use.");
+    public void destroyWhenUsed(Inventory inventory) {
+        boolean removed = inventory.removeItem(this);
+        if (removed) {
+            System.out.println("Potion " + this.getItemName() + " destroyed after use.");
+        } else {
+            System.out.println("Potion " + this.getItemName() + " was not found in inventory.");
+        }
     }
+
+    //Getters & Setters
+    public double getIncreasedValue() {return increasedValue;}
+
+    public void setIncreasedValue(double increasedValue) {this.increasedValue = increasedValue;}
 }
