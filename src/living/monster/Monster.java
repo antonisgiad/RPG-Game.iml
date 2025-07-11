@@ -5,33 +5,18 @@ import utils.RandomUtil;
 
 public class Monster extends Living {
     //Variables
-    double defense, dodgeChance, originalMinDamage, originalMaxDamage, originalDefense, originalDodgeChance; //originals used in spell subclasses check there
-    double[] damageRange;
-    int iceRoundsLeft = 0, fireRoundsLeft = 0, lightningRoundsLeft = 0; //check spell subclasses
+    private double defense, dodgeChance, originalDefense, originalDodgeChance; //originals used in spell subclasses check there
+    private double[] damageRange, originalDamageRange;
+    private int iceRoundsLeft = 0, fireRoundsLeft = 0, lightningRoundsLeft = 0; //check spell subclasses
 
     //Functions
     //Constructor
     public Monster(String livingName) {
         super(livingName);
-
-        // Use RandomUtil for all random stats
-        this.defense = RandomUtil.randomStat(5, 20);           // Defense: 5–20
-        this.dodgeChance = RandomUtil.randomStat(0.05, 0.25);  // Dodge chance: 0.05–0.25
-
-        // Store original values for debuff logic
-        this.originalDefense = this.defense;
-        this.originalDodgeChance = this.dodgeChance;
-
-        // Set damage range array
+        this.defense = 20;
+        this.dodgeChance = 0.1;
         this.damageRange = new double[]{100, 200};
     }
-    //Calculate the damage taken from an attack considering defense factor
-    public void receiveDamage(double incomingDamage) {
-        double damageTaken = Math.max(0, incomingDamage - defense);
-        setHealthPower(Math.max(0, getHealthPower() - damageTaken));
-        System.out.println(getLivingName() + " suffered " + damageTaken + " damage!");
-    }
-
 
     //...........call updateIce/Fire/Lightning Effect() on each round on fight class!!!.............
 
@@ -41,8 +26,8 @@ public class Monster extends Living {
         if (iceRoundsLeft > 0) {
             iceRoundsLeft--;
             if (iceRoundsLeft == 0) {
-                setMinDamage(originalMinDamage);
-                setMaxDamage(originalMaxDamage);
+                damageRange[0] = originalDamageRange[0]; // reset min damage
+                damageRange[1] = originalDamageRange[1]; // reset max damage
             }
         }
     }
@@ -67,14 +52,6 @@ public class Monster extends Living {
         }
     }
     //Getters & Setters
-    public double getMinDamage() {return minDamage;}
-
-    public void setMinDamage(double minDamage) {this.minDamage = minDamage;}
-
-    public double getMaxDamage() {return maxDamage;}
-
-    public void setMaxDamage(double maxDamage) {this.maxDamage = maxDamage;}
-
     public double getDefense() {return defense;}
 
     public void setDefense(double defense) {this.defense = defense;}
@@ -83,25 +60,17 @@ public class Monster extends Living {
 
     public void setDodgeChance(double dodgeChance) {this.dodgeChance = dodgeChance;}
 
-    public double getOriginalMinDamage() {return originalMinDamage;}
-
-    public void setOriginalMinDamage(double originalMinDamage) {this.originalMinDamage = originalMinDamage;}
-
-    public double getOriginalMaxDamage() {return originalMaxDamage;}
-
-    public void setOriginalMaxDamage(double originalMaxDamage) {this.originalMaxDamage = originalMaxDamage;}
-
-    public double getOriginalDefense() {return originalDefense;}
-
-    public void setOriginalDefense(double originalDefense) {this.originalDefense = originalDefense;}
-
-    public double getOriginalDodgeChance() {return originalDodgeChance;}
-
-    public void setOriginalDodgeChance(double originalDodgeChance) {this.originalDodgeChance = originalDodgeChance;}
-
     public double[] getDamageRange() {return damageRange;}
 
     public void setDamageRange(double[] damageRange) {this.damageRange = damageRange;}
+    //For the min and max values of damage range
+    public double getMinDamage() { return damageRange[0]; }
+
+    public void setMinDamage(double minDamage) {this.damageRange[0] = minDamage;}
+
+    public double getMaxDamage() { return damageRange[1]; }
+
+    public void setMaxDamage(double maxDamage) {this.damageRange[1] = maxDamage;}
 
     public int getIceRoundsLeft() {return iceRoundsLeft;}
 

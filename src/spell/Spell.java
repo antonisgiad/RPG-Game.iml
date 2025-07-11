@@ -15,12 +15,10 @@ public class Spell {
     //Constructor
     public Spell(String spellName) {
         this.spellName = spellName;
-        this.spellCost = RandomUtil.randomStat(30, 120);            // Spell cost
-        this.magicPowerRequired = RandomUtil.randomStat(10, 40);    // Magic power required
-        this.spellMinLevel = RandomUtil.randomLevel(1, 5);          // Minimum level to use
-        this.minDamage = RandomUtil.randomStat(15, 30);               // Minimum spell damage
-        this.maxDamage = this.minDamage + RandomUtil.randomStat(10, 25); // Maximum spell damage
-        this.damageRange = new double[] {minDamage, maxDamage};
+        this.spellCost = 50;            // Spell cost
+        this.magicPowerRequired = 20;    // Magic power required
+        this.spellMinLevel = 2;          // Minimum level to use
+        this.damageRange = new double[] {10, 20};
     }
 
     //Remove magic power needed to cast the spell
@@ -36,20 +34,6 @@ public class Spell {
         }
     }
 
-    public double calculateDamageDealt(Hero caster, Monster target) {
-        double casterMagicPower = caster.getMagicPower();
-        double targetMagicDefense = target.getDefense();
-        double casterDexterity =  caster.getDexterity();
-
-        double damage = (casterMagicPower * casterDexterity) - targetMagicDefense; // Dexterity affects damage
-
-        if (damage < minDamage) {
-            damage = minDamage;
-        } else if (damage > maxDamage) {
-            damage = maxDamage;
-        }
-        return damage;
-    }
     //Getters & Setters
     public String getSpellName() {
         return spellName;

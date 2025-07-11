@@ -33,7 +33,7 @@ public class LightningSpell extends Spell {
     public void reduceEnemyDodgeChance(Monster enemy, int rounds, double dodgeReductionPercent) {
         // Save original dodge chance only if there is not already active effect
         if (enemy.getLightningRoundsLeft() == 0) {
-            double originalDodgeChance = enemy.getOriginalDodgeChance();
+            double originalDodgeChance = enemy.getDodgeChance();
             originalDodgeChance = enemy.getDodgeChance();
         }
         double newDodgeChance = enemy.getDodgeChance() * (1 - dodgeReductionPercent);
@@ -47,7 +47,7 @@ public class LightningSpell extends Spell {
     public void reducedDodgeChance(Monster enemy) {
         // Save original chance only if there is not already active effect
         if (enemy.getLightningRoundsLeft() == 0) {
-            double originalDodgeChance = enemy.getOriginalDodgeChance();
+            double originalDodgeChance = enemy.getDodgeChance();
             originalDodgeChance = enemy.getDefense();
         }
         // Calculate new chance

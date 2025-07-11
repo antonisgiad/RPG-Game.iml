@@ -23,22 +23,23 @@ public class Grid {
             for (int j = 0; j < cols; j++) {
                 int roll = RandomUtil.randomLevel(0, 99); // 0-99 inclusive
                 if (roll < 10) {
-                    grid[i][j] = CellType.MARKET; // 10% chance
+                    grid[i][j] = CellType.MARKET;
                 }
                 else if (roll < 90) {
-                    grid[i][j] = CellType.COMMON; // 80% chance
+                    grid[i][j] = CellType.COMMON;
                 }
                 else {
-                    grid[i][j] = CellType.NON_ACCESSIBLE; // 20% chance
+                    grid[i][j] = CellType.NON_ACCESSIBLE;
                 }
             }
         }
         ensureAtLeastOneOfEachType();
     }
-    //Check
+
     private void ensureAtLeastOneOfEachType() {
         boolean foundMarket = false, foundFight = false, foundCommon = false, foundNonAccessible = false;
 
+        // 1. Scan the grid to check which types exist
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 switch (grid[i][j]) {
@@ -50,11 +51,25 @@ public class Grid {
             }
         }
 
-        // If some type is missing, τοποθέτησέ το τυχαία με χρήση RandomUtil
-        if (!foundMarket) grid[RandomUtil.randomLevel(0, rows - 1)][RandomUtil.randomLevel(0, cols - 1)] = CellType.MARKET;
-        if (!foundFight) grid[RandomUtil.randomLevel(0, rows - 1)][RandomUtil.randomLevel(0, cols - 1)] = CellType.FIGHT;
-        if (!foundCommon) grid[RandomUtil.randomLevel(0, rows - 1)][RandomUtil.randomLevel(0, cols - 1)] = CellType.COMMON;
-        if (!foundNonAccessible) grid[RandomUtil.randomLevel(0, rows - 1)][RandomUtil.randomLevel(0, cols - 1)] = CellType.NON_ACCESSIBLE;
+        // 2. For each missing type, randomly place it on a cell that is not already that type
+        placeMissingTypeIfNeeded(!foundMarket, CellType.MARKET);
+        placeMissingTypeIfNeeded(!foundFight, CellType.FIGHT);
+        placeMissingTypeIfNeeded(!foundCommon, CellType.COMMON);
+        placeMissingTypeIfNeeded(!foundNonAccessible, CellType.NON_ACCESSIBLE);
+    }
+
+    // Helper method to place a missing type
+    private void placeMissingTypeIfNeeded(boolean isMissing, CellType type) {
+        if (!isMissing) return;
+        int maxAttempts = 100;
+        for (int attempt = 0; attempt < maxAttempts; attempt++) {
+            int r = RandomUtil.randomLevel(0, rows - 1);
+            int c = RandomUtil.randomLevel(0, cols - 1);
+            if (grid[r][c] != type) {
+                grid[r][c] = type;
+                return;
+            }
+        }
     }
 
     public void displayGrid(Player player) {

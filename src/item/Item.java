@@ -1,31 +1,43 @@
 package item;
 
-import utils.RandomUtil;
-
 public class Item {
     //Variables
-    String itemName;
-    double itemMarketCost;
-    int itemMinLevel;
+
+    private String itemName;
+    private double itemMarketCost;
+    private int itemMinLevel;
 
     //Functions
+
     //Constructor
-    public Item(String itemName) {
+    public Item(String itemName,  double itemMarketCost, int itemMinLevel) {
         this.itemName = itemName;
-        this.itemMarketCost = RandomUtil.randomStat(10, 100); // Cost between 10–100
-        this.itemMinLevel = RandomUtil.randomLevel(1, 5);      // Level between 1–5
+        this.itemMarketCost = itemMarketCost; // Cost between 10–100
+        this.itemMinLevel = itemMinLevel;      // Level between 1–5
     }
 
-    //Getters
+    //Getters * Setters
     public String getItemName() {
         return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
     public double getItemMarketCost() {
         return itemMarketCost;
     }
 
+    public void setItemMarketCost(double itemMarketCost) {
+        this.itemMarketCost = itemMarketCost;
+    }
+
     public int getItemMinLevel() {
         return itemMinLevel;
+    }
+
+    public void setItemMinLevel(int itemMinLevel) {
+        this.itemMinLevel = itemMinLevel;
     }
 }

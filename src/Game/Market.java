@@ -31,19 +31,20 @@ public class Market {
         List<Item> items = new ArrayList<>();
 
         // Potions
-        items.add(new Potion("Health Potion"));
-        items.add(new Potion("Mana Potion"));
-        items.add(new Potion("Strength Potion"));
+        items.add(new Potion("Health Potion", 10.0, 1, 20.0));
+        items.add(new Potion("Mana Potion", 12.0, 1, 15.0));
+        items.add(new Potion("Strength Potion", 20.0, 2, 5.0));
+
 
         // Armors
-        items.add(new Armor("Leather Armor"));
-        items.add(new Armor("Chainmail Armor"));
-        items.add(new Armor("Plate Armor"));
+        items.add(new Armor("Leather Armor", 25.0, 1, 5.0));
+        items.add(new Armor("Chainmail Armor", 40.0, 2, 10.0));
+        items.add(new Armor("Plate Armor", 60.0, 3, 15.0));
 
         // Weapons
-        items.add(new Weapon("Short Sword", 1));
-        items.add(new Weapon("Long Bow", 2));
-        items.add(new Weapon("Battle Axe", 2));
+        items.add(new Weapon("Short Sword", 15.0, 1, 8.0, 1));
+        items.add(new Weapon("Long Bow", 30.0, 2, 12.0, 2));
+        items.add(new Weapon("Battle Axe", 50.0, 3, 20.0, 2));
 
         return items;
     }
@@ -182,8 +183,7 @@ public class Market {
         }
     }
 
-
-
+//Old display method
 //    public void displayAvailableItemsAndSpells() {
 //        System.out.println("---- Available Items ----");
 //        for (Item item : availableItems) {
@@ -244,32 +244,56 @@ public class Market {
         return false;
     }
 
-    //Sell method
-    public boolean sell(Hero hero, Object product) {
-        double sellPrice = 0;
-        boolean removed = false;
-        if (product instanceof Item) {
-            Item item = (Item) product;
-            sellPrice = item.getItemMarketCost() * 0.5; // π.χ. πουλάς στο 50% της τιμής αγοράς
-            removed = hero.getInventory().removeItem(item);
-            if (removed) {
-                hero.setMoney(hero.getMoney() + sellPrice);
-                System.out.println("Sold the item: " + item.getItemName() + " for " + sellPrice + " gold");
-            }
-        } else if (product instanceof Spell) {
-            Spell spell = (Spell) product;
-            sellPrice = spell.getSpellCost() * 0.5;
-            removed = hero.getInventory().removeSpell(spell);
-            if (removed) {
-                hero.setMoney(hero.getMoney() + sellPrice);
-                System.out.println("Sold the spell: " + spell.getSpellName() + " for " + sellPrice + " gold");
-            }
-        }
-        if (!removed) {
-            System.out.println("Item/Spell not found in inventory.");
+    //Sell methods for item and spell
+    public boolean sellItem(Hero hero, Item item) {
+        double sellPrice = item.getItemMarketCost() * 0.5;
+        boolean removed = hero.getInventory().removeItem(item);
+        if (removed) {
+            hero.setMoney(hero.getMoney() + sellPrice);
+            System.out.println("Sold the item: " + item.getItemName() + " for " + sellPrice + " gold");
+        } else {
+            System.out.println("Item not found in inventory.");
         }
         return removed;
     }
+
+    public boolean sellSpell(Hero hero, Spell spell) {
+        double sellPrice = spell.getSpellCost() * 0.5;
+        boolean removed = hero.getInventory().removeSpell(spell);
+        if (removed) {
+            hero.setMoney(hero.getMoney() + sellPrice);
+            System.out.println("Sold the spell: " + spell.getSpellName() + " for " + sellPrice + " gold");
+        } else {
+            System.out.println("Spell not found in inventory.");
+        }
+        return removed;
+    }
+
+//    public boolean sell(Hero hero, Object product) {
+//        double sellPrice = 0;
+//        boolean removed = false;
+//        if (product instanceof Item) {
+//            Item item = (Item) product;
+//            sellPrice = item.getItemMarketCost() * 0.5; // π.χ. πουλάς στο 50% της τιμής αγοράς
+//            removed = hero.getInventory().removeItem(item);
+//            if (removed) {
+//                hero.setMoney(hero.getMoney() + sellPrice);
+//                System.out.println("Sold the item: " + item.getItemName() + " for " + sellPrice + " gold");
+//            }
+//        } else if (product instanceof Spell) {
+//            Spell spell = (Spell) product;
+//            sellPrice = spell.getSpellCost() * 0.5;
+//            removed = hero.getInventory().removeSpell(spell);
+//            if (removed) {
+//                hero.setMoney(hero.getMoney() + sellPrice);
+//                System.out.println("Sold the spell: " + spell.getSpellName() + " for " + sellPrice + " gold");
+//            }
+//        }
+//        if (!removed) {
+//            System.out.println("Item/Spell not found in inventory.");
+//        }
+//        return removed;
+//    }
 
     //Getters & Setters
     public List<Item> getAvailableItems() {

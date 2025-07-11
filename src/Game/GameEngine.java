@@ -31,7 +31,8 @@ public class GameEngine {
         initializePlayerAndHeroes();
 
         System.out.println("\n--- Your Team's Initial Status ---");
-        this.player.displayStatus();
+        this.player.displayStats();
+        grid.displayGrid(player);
 
         mainGameLoop();
     }
@@ -107,7 +108,7 @@ public class GameEngine {
 
         // Show the team's status after shopping
         System.out.println("\n--- Your Team's Status After Shopping ---");
-        player.displayStatus();
+        player.displayStats();
 
         // Output a message to initiate the adventure
         System.out.println("\nYour heroes are ready! The adventure begins now. Explore the world, face challenges, and lead your team to victory!\n");
@@ -123,7 +124,7 @@ public class GameEngine {
             }
 
             if (input.equalsIgnoreCase("status")) {
-                player.displayStatus();
+                player.displayStats();
                 continue;
             }
 
@@ -214,15 +215,79 @@ public class GameEngine {
                                     System.out.println("Purchase failed: insufficient level or money.");
                                 }
                                 break;
-//                            case 2:
-//                                market.sell(hero, scanner);
-//                                break;
+                            case 2:
+                                // 1. Hero selection
+                                heroes = player.getHeroes();
+                                System.out.println("Choose a hero to sell from:");
+                                for (int i = 0; i < heroes.size(); i++) {
+                                    System.out.println((i + 1) + ". " + heroes.get(i).getLivingName() + " (Gold: " + heroes.get(i).getMoney() + ")");
+                                }
+                                int heroChoiceSell;
+                                try {
+                                    heroChoiceSell = Integer.parseInt(scanner.nextLine()) - 1;
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Invalid input. Returning to market menu.");
+                                    break;
+                                }
+                                if (heroChoiceSell < 0 || heroChoiceSell >= heroes.size()) {
+                                    System.out.println("Invalid hero selection. Returning to market menu.");
+                                    break;
+                                }
+                                Hero selectedHeroSell = heroes.get(heroChoiceSell);
+
+                                // 2. Product selection from hero's inventory
+                                List<Item> heroItems = selectedHeroSell.getInventory().getItems();
+                                List<Spell> heroSpells = selectedHeroSell.getInventory().getSpells();
+
+                                if (heroItems.isEmpty() && heroSpells.isEmpty()) {
+                                    System.out.println("This hero has no items or spells to sell.");
+                                    break;
+                                }
+
+                                System.out.println("Items and Spells in Inventory:");
+                                int count = 1;
+                                for (Item item : heroItems) {
+                                    System.out.println(count + ". " + item.getItemName() + " (Sell for: " + (item.getItemMarketCost() * 0.5) + " gold)");
+                                    count++;
+                                }
+                                for (Spell spell : heroSpells) {
+                                    System.out.println(count + ". " + spell.getSpellName() + " (Sell for: " + (spell.getSpellCost() * 0.5) + " gold)");
+                                    count++;
+                                }
+
+                                System.out.print("Enter the number of the item/spell to sell: ");
+                                int sellChoice;
+                                try {
+                                    sellChoice = Integer.parseInt(scanner.nextLine()) - 1;
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Invalid input. Returning to market menu.");
+                                    break;
+                                }
+                                boolean sellResult = false;
+                                if (sellChoice >= 0 && sellChoice < heroItems.size()) {
+                                    Item itemToSell = heroItems.get(sellChoice);
+                                    sellResult = market.sellItem(selectedHeroSell, itemToSell);
+                                } else if (sellChoice >= heroItems.size() && sellChoice < heroItems.size() + heroSpells.size()) {
+                                    Spell spellToSell = heroSpells.get(sellChoice - heroItems.size());
+                                    sellResult = market.sellSpell(selectedHeroSell, spellToSell);
+                                } else {
+                                    System.out.println("Invalid selection. Returning to market menu.");
+                                    break;
+                                }
+
+                                if (sellResult) {
+                                    System.out.println("Sale successful!");
+                                } else {
+                                    System.out.println("Sale failed: item or spell not found in inventory.");
+                                }
+                                break;
                             case 3:
                                 market.displayAvailableItemsAndSpells();
                                 break;
                             case 4:
                                 inMarket = false;
-                                System.out.println("Leaving the market.");
+                                System.out.println("Leaving the market...");
+                                grid.displayGrid(player);
                                 break;
                             default:
                                 System.out.println("Invalid choice. Please try again.");
@@ -232,15 +297,49 @@ public class GameEngine {
 
 
                 case COMMON:
-                    System.out.println("You are in a common area. Your heroes can:");
-                    System.out.println("- Check their inventory");
-                    System.out.println("- Equip or use items/spells");
-                    System.out.println("- Rest or strategize");
-                    // Optionally, offer a menu for these actions:
-                    // checkInventory, equip, use, displayStats, etc.
-                    // For example:
-                    // player.commonAreaMenu(scanner);
+                    System.out.println("You are in a common area. What would you like to do?");
+                    boolean inCommonArea = true;
+                    while (inCommonArea) {
+                        System.out.println("\n--- Common Area Actions ---");
+                        System.out.println("1. View Heroes Inventories");
+                        System.out.println("2. Equip or Use an Item/Spell");
+                        System.out.println("3. Show Map");
+                        System.out.println("4. View Heroes' Stats");
+                        System.out.println("5. Keep Moving");
+                        System.out.println("6. Quit Game");
+                        System.out.print("Enter the number of your choice: ");
+
+                        input = scanner.nextLine();
+                        switch (input) {
+                            case "1":
+                                for (Hero hero : player.getHeroes()) {
+                                    System.out.println(hero.getLivingName() + "'s Inventory:");
+                                    hero.getInventory().checkInventory();
+                                }
+                                break;
+//                          case "2":
+//                                player.equipOrUseMenu(scanner);
+//                                break;
+                            case "3":
+                                grid.displayGrid(player);
+                                break;
+                            case "4":
+                                player.displayStats();
+                                break;
+                            case "5":
+                                inCommonArea = false;
+                                grid.displayGrid(player);
+                                break;
+                            case "6":
+                                System.out.println("Thank you for playing! Goodbye.");
+                                System.exit(0); // This will terminate the program
+                                break;
+                            default:
+                                System.out.println("Invalid choice. Please try again.");
+                        }
+                    }
                     break;
+
 
                 case NON_ACCESSIBLE:
                     System.out.println("You cannot move to a non-accessible cell! Please choose another direction.");

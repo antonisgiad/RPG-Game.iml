@@ -9,6 +9,7 @@ public class IceSpell extends Spell {
     double rangeReductionPercentage, iceSpellDamageDealt;
 
     //Functions
+
     //Constructor
     public IceSpell(String spellName) {
         super(spellName);
@@ -17,6 +18,7 @@ public class IceSpell extends Spell {
         this.rangeReductionPercentage = RandomUtil.randomStat(0.2, 0.5);        // 20%–50% reduction
         this.iceSpellDamageDealt = RandomUtil.randomStat(this.minDamage, this.maxDamage);
     }
+
     // Damage dealt by ice spell
     public void castIceSpell(Monster target, Hero user) {
         double totalDamage = this.iceSpellDamageDealt;
@@ -27,12 +29,13 @@ public class IceSpell extends Spell {
 
         System.out.println(user.getLivingName() + " casts " + this.getSpellName() + " and causes " + effectiveDamage + " ice damage!");
     }
+
     // Ice Spell debuff for couple rounds (check monster class)
     public void reduceEnemyDamageRange(Monster enemy, int rounds) {
         // Save original damage range only if there is not already active effect
         if (enemy.getIceRoundsLeft() == 0) {
-            double originalMinDamage = enemy.getOriginalMinDamage();
-            double originalMaxDamage = enemy.getOriginalMaxDamage();
+            double originalMinDamage = enemy.getMinDamage();
+            double originalMaxDamage = enemy.getMaxDamage();
             originalMinDamage = enemy.getMinDamage();
             originalMaxDamage = enemy.getMaxDamage();
         }

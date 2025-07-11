@@ -12,9 +12,10 @@ public class Hero extends Living {
     Inventory inventory;
 
     //Functions
+
     //Constructor
-    public Hero(String living_name) {
-        super(living_name);
+    public Hero(String livingName) {
+        super(livingName);
         this.magicPower = 5;
         this.strength = 8;
         this.dexterity = 6;
@@ -41,6 +42,7 @@ public class Hero extends Living {
 
         System.out.println("Spell's damage range has been increased by +" + dexterityBonus + "!");
     }
+
     //agility affects dodge chance
     public boolean dodgeMonsterAttackChance() {
         double chance = agility * 0.01;
@@ -49,6 +51,7 @@ public class Hero extends Living {
         }
         return Math.random() < chance;
     }
+
     //Level Up Hero
     public void levelUp() {
         // Check if hero has requiredExperience
@@ -68,15 +71,6 @@ public class Hero extends Living {
         }
     }
 
-//    public void attack(Monster target) {
-//        if (target.passedOut()) {
-//            System.out.println(target.getLivingName() + " is already defeated!");
-//            return;
-//        }
-////        double damage = this.getweaponDam();
-////        target.receiveDamage(damage);
-////        System.out.println(this.getLivingName() + " attacks " + target.getLivingName() + " for " + damage + " damage!");
-//    }
     //Getters & Setters
     public double getMagicPower() {
         return magicPower;

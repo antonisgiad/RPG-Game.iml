@@ -1,19 +1,19 @@
 package item;
 
 import Game.Inventory;
-import Game.Player;
 import living.heroes.Hero;
-import utils.RandomUtil;
 
 public class Potion extends Item {
     //Variables
+
     double increasedValue; //Random starter value to increase statistics
 
     //Functions
+
     //Constructor
-    public Potion(String itemName) {
-        super(itemName);
-        this.increasedValue = RandomUtil.randomStat(5, 25); // Stat increase between 5–25
+    public Potion(String itemName, double itemMarketCost, int itemMinLevel, double increasedValue) {
+        super(itemName, itemMarketCost, itemMinLevel);
+        this.increasedValue = increasedValue;
     }
 
     public void increaseRandomStatistic(Hero hero) {

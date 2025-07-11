@@ -87,8 +87,8 @@ public class Player {
         this.currentCol = col;
     }
 
-    // Display player status
-    public void displayStatus() {
+    // Display player stats
+    public void displayStats() {
         System.out.println("Player: " + playerName);
         System.out.println("Location: (" + currentRow + ", " + currentCol + ")");
         System.out.println("Party:");
@@ -140,7 +140,6 @@ public class Player {
         }
         System.out.println("-------------------------------------------------");
     }
-
 
     //Getters & Setters
     public String getPlayerName() {

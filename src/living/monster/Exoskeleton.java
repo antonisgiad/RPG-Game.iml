@@ -10,6 +10,6 @@ public class Exoskeleton extends Monster {
     //Constructor
     public Exoskeleton(String livingName) {
         super(livingName);
-        this.increasedDefense = RandomUtil.randomStat(10, 25) + defense; // Fully random
+        this.increasedDefense = RandomUtil.randomStat(10, 25) + getDefense(); // Fully random
     }
 }
