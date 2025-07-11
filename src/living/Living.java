@@ -1,7 +1,5 @@
 package living;
 
-import utils.RandomUtil;
-
 public class Living {
     //Variables
     String livingName;

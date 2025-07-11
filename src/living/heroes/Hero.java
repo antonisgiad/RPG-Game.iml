@@ -20,7 +20,7 @@ public class Hero extends Living {
         this.strength = 8;
         this.dexterity = 6;
         this.agility = 6;
-        this.money = 12;
+        this.money = 200;
         this.experience = 0;
         this.inventory = new Inventory();
     }

@@ -1,10 +1,7 @@
 package item;
 
-import utils.RandomUtil;
-
 public class Weapon extends Item {
     //Variables
-
     private double weaponDamage;
     private int hands;
 

@@ -1,8 +1,5 @@
 package living.heroes;
 
-import living.Living;
-import utils.RandomUtil;
-
 public class Sorcerer extends Hero {
     //Variables
 

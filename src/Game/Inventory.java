@@ -11,7 +11,8 @@ public class Inventory {
     // Variables
     private List<Item> items;  // Items owned by the player
     private List<Spell> spells; // Spells owned by the player
-
+    private Weapon equippedWeapon;
+    private Armor equippedArmor;
     // Constructor
     public Inventory() {
         this.items = new ArrayList<>();
@@ -46,6 +47,16 @@ public class Inventory {
             }
         }
         System.out.println("=================");
+    }
+
+    public boolean equipWeapon(Weapon weapon) {
+        this.equippedWeapon = weapon;
+        return true;
+    }
+
+    public boolean equipArmor(Armor armor) {
+        this.equippedArmor = armor;
+        return true;
     }
 
 //    public boolean equip(Item item) {
@@ -93,5 +104,30 @@ public class Inventory {
     // List all spells
     public List<Spell> getSpells() {
         return new ArrayList<>(spells);
+    }
+
+    //Getters & Setters
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
+    public void setSpells(List<Spell> spells) {
+        this.spells = spells;
+    }
+
+    public Weapon getEquippedWeapon() {
+        return equippedWeapon;
+    }
+
+    public void setEquippedWeapon(Weapon equippedWeapon) {
+        this.equippedWeapon = equippedWeapon;
+    }
+
+    public Armor getEquippedArmor() {
+        return equippedArmor;
+    }
+
+    public void setEquippedArmor(Armor equippedArmor) {
+        this.equippedArmor = equippedArmor;
     }
 }

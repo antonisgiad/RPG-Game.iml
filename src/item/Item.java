@@ -2,7 +2,6 @@ package item;
 
 public class Item {
     //Variables
-
     private String itemName;
     private double itemMarketCost;
     private int itemMinLevel;

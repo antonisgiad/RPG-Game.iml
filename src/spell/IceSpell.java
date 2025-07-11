@@ -6,7 +6,7 @@ import utils.RandomUtil;
 
 public class IceSpell extends Spell {
     //Variables
-    double rangeReductionPercentage, iceSpellDamageDealt;
+    private double rangeReductionPercentage, iceSpellDamageDealt;
 
     //Functions
 
@@ -48,5 +48,22 @@ public class IceSpell extends Spell {
         iceRoundsLeft = rounds;
 
         System.out.println("IceSpell has reduced enemy's damage range by " + (int)(rangeReductionPercentage * 100) + "% for " + rounds + " rounds.");
+    }
+
+    //Getters & Setters
+    public double getRangeReductionPercentage() {
+        return rangeReductionPercentage;
+    }
+
+    public void setRangeReductionPercentage(double rangeReductionPercentage) {
+        this.rangeReductionPercentage = rangeReductionPercentage;
+    }
+
+    public double getIceSpellDamageDealt() {
+        return iceSpellDamageDealt;
+    }
+
+    public void setIceSpellDamageDealt(double iceSpellDamageDealt) {
+        this.iceSpellDamageDealt = iceSpellDamageDealt;
     }
 }

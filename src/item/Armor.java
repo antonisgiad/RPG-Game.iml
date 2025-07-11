@@ -1,11 +1,7 @@
 package item;
 
-import living.monster.Monster;
-import utils.RandomUtil;
-
 public class Armor extends Item {
     //Variables
-
     private double reducedDamage;
 
     //Functions

@@ -1,8 +1,6 @@
 package spell;
 
 import living.heroes.Hero;
-import living.monster.Monster;
-import utils.RandomUtil;
 
 public class Spell {
     //Variables
@@ -17,7 +15,7 @@ public class Spell {
         this.spellName = spellName;
         this.spellCost = 50;            // Spell cost
         this.magicPowerRequired = 20;    // Magic power required
-        this.spellMinLevel = 2;          // Minimum level to use
+        this.spellMinLevel = 1;          // Minimum level to use
         this.damageRange = new double[] {10, 20};
     }
 

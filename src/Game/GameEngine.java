@@ -143,7 +143,6 @@ public class GameEngine {
                     System.out.println("A wild monster appears! Prepare for battle!");
                     Fight fight = new Fight(player.getHeroes(), 3);
                     fight.startBattle();
-                    // Optionally, after battle, you could restore some hero stats or give rewards
                     break;
 
                 case MARKET:
@@ -197,24 +196,77 @@ public class GameEngine {
                                     System.out.println("Invalid input. Returning to market menu.");
                                     break;
                                 }
-                                Object selectedProduct;
+
+                                boolean purchaseSuccess = false;
                                 if (productChoice >= 0 && productChoice < items.size()) {
-                                    selectedProduct = items.get(productChoice);
+                                    Item itemToBuy = items.get(productChoice);
+                                    purchaseSuccess = market.buyItem(selectedHero, itemToBuy);
                                 } else if (productChoice >= items.size() && productChoice < items.size() + spells.size()) {
-                                    selectedProduct = spells.get(productChoice - items.size());
+                                    Spell spellToBuy = spells.get(productChoice - items.size());
+                                    purchaseSuccess = market.buySpell(selectedHero, spellToBuy);
                                 } else {
                                     System.out.println("Invalid selection. Returning to market menu.");
                                     break;
                                 }
 
-                                // 3. Attempt purchase
-                                boolean success = market.buy(selectedHero, selectedProduct);
-                                if (success) {
+                                if (purchaseSuccess) {
                                     System.out.println("Purchase successful!");
                                 } else {
                                     System.out.println("Purchase failed: insufficient level or money.");
                                 }
                                 break;
+
+//                            case 1:
+//                                // 1. Hero selection
+//                                List<Hero> heroes = player.getHeroes();
+//                                System.out.println("Choose a hero to buy for:");
+//                                for (int i = 0; i < heroes.size(); i++) {
+//                                    System.out.println((i + 1) + ". " + heroes.get(i).getLivingName() + " (Gold: " + heroes.get(i).getMoney() + ")");
+//                                }
+//                                int heroChoice;
+//                                try {
+//                                    heroChoice = Integer.parseInt(scanner.nextLine()) - 1;
+//                                } catch (NumberFormatException e) {
+//                                    System.out.println("Invalid input. Returning to market menu.");
+//                                    break;
+//                                }
+//                                if (heroChoice < 0 || heroChoice >= heroes.size()) {
+//                                    System.out.println("Invalid hero selection. Returning to market menu.");
+//                                    break;
+//                                }
+//                                Hero selectedHero = heroes.get(heroChoice);
+//
+//                                // 2. Product selection
+//                                List<Item> items = market.getAvailableItems();
+//                                List<Spell> spells = market.getAvailableSpells();
+//                                System.out.println("Available Items and Spells:");
+//                                market.displayAvailableItemsAndSpells();
+//                                System.out.print("Enter the number of the item/spell to buy: ");
+//                                int productChoice;
+//                                try {
+//                                    productChoice = Integer.parseInt(scanner.nextLine()) - 1;
+//                                } catch (NumberFormatException e) {
+//                                    System.out.println("Invalid input. Returning to market menu.");
+//                                    break;
+//                                }
+//                                Object selectedProduct;
+//                                if (productChoice >= 0 && productChoice < items.size()) {
+//                                    selectedProduct = items.get(productChoice);
+//                                } else if (productChoice >= items.size() && productChoice < items.size() + spells.size()) {
+//                                    selectedProduct = spells.get(productChoice - items.size());
+//                                } else {
+//                                    System.out.println("Invalid selection. Returning to market menu.");
+//                                    break;
+//                                }
+//
+//                                // 3. Attempt purchase
+//                                boolean success = market.buy(selectedHero, selectedProduct);
+//                                if (success) {
+//                                    System.out.println("Purchase successful!");
+//                                } else {
+//                                    System.out.println("Purchase failed: insufficient level or money.");
+//                                }
+//                                break;
                             case 2:
                                 // 1. Hero selection
                                 heroes = player.getHeroes();
