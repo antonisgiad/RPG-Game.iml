@@ -1,6 +1,7 @@
 package Game;
 
 import item.Item;
+import living.heroes.Hero;
 import spell.Spell;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,32 +50,32 @@ public class Inventory {
         System.out.println("=================");
     }
 
-    public boolean equipWeapon(Weapon weapon) {
+    public boolean equipWeapon(Weapon weapon, Hero hero, int availableHands) {
+        if (hero.getLivingLevel() < weapon.getItemMinLevel()) {
+            System.out.println("Level too low to equip this weapon.");
+            return false;
+        }
+        if (weapon.getHands() > availableHands) {
+            System.out.println("Not enough hands to equip this weapon.");
+            return false;
+        }
+        // Attempt to remove the weapon from the hero's inventory before equipping it.
+        if (!this.removeItem(weapon)) {
+            System.out.println("Failed to remove the weapon from inventory.");
+            return false;
+        }
         this.equippedWeapon = weapon;
         return true;
     }
 
-    public boolean equipArmor(Armor armor) {
+    public boolean equipArmor(Armor armor, Hero hero) {
+        if (hero.getLivingLevel() < armor.getItemMinLevel()) {
+            System.out.println("Level too low to equip this weapon.");
+            return false;
+        }
         this.equippedArmor = armor;
         return true;
     }
-
-//    public boolean equip(Item item) {
-//        // Check if item is a weapon
-//        if (item instanceof Weapon) {
-//            this.equippedWeapon = (Weapon) item;
-//            System.out.println("Εξοπλίστηκε το όπλο: " + item.getItemName());
-//            return true;
-//        }
-//        // Έλεγχος αν το αντικείμενο είναι πανοπλία
-//        else if (item instanceof Armor) {
-//            this.equippedArmor = (Armor) item;
-//            System.out.println("Εξοπλίστηκε η πανοπλία: " + item.getItemName());
-//            return true;
-//        }
-//        System.out.println("Το αντικείμενο δεν μπορεί να εξοπλιστεί.");
-//        return false;
-//    }
 
     // Add an item
     public void addItem(Item item) {

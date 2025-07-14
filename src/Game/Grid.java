@@ -5,69 +5,63 @@ import utils.RandomUtil;
 public class Grid {
     //Variables
     public enum CellType { COMMON, MARKET, FIGHT, NON_ACCESSIBLE }
-    int rows;
-    int cols;
+    private int rows;
+    private int cols;
     CellType[][] grid;
 
     //Functions
+
     //Constructor
-    public Grid(int rows, int cols) {
-        this.rows = rows;
-        this.cols = cols;
+    public Grid() {
+        this.rows = 10;
+        this.cols = 10;
         this.grid = new CellType[rows][cols];
         generateRandomGrid();
     }
+
     //Generate grid
     private void generateRandomGrid() {
+        // Set all cells to COMMON
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                int roll = RandomUtil.randomLevel(0, 99); // 0-99 inclusive
-                if (roll < 10) {
-                    grid[i][j] = CellType.MARKET;
-                }
-                else if (roll < 90) {
-                    grid[i][j] = CellType.COMMON;
-                }
-                else {
-                    grid[i][j] = CellType.NON_ACCESSIBLE;
-                }
-            }
-        }
-        ensureAtLeastOneOfEachType();
-    }
-
-    private void ensureAtLeastOneOfEachType() {
-        boolean foundMarket = false, foundFight = false, foundCommon = false, foundNonAccessible = false;
-
-        // 1. Scan the grid to check which types exist
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                switch (grid[i][j]) {
-                    case MARKET: foundMarket = true; break;
-                    case FIGHT: foundFight = true; break;
-                    case COMMON: foundCommon = true; break;
-                    case NON_ACCESSIBLE: foundNonAccessible = true; break;
-                }
+                grid[i][j] = CellType.COMMON;
             }
         }
 
-        // 2. For each missing type, randomly place it on a cell that is not already that type
-        placeMissingTypeIfNeeded(!foundMarket, CellType.MARKET);
-        placeMissingTypeIfNeeded(!foundFight, CellType.FIGHT);
-        placeMissingTypeIfNeeded(!foundCommon, CellType.COMMON);
-        placeMissingTypeIfNeeded(!foundNonAccessible, CellType.NON_ACCESSIBLE);
-    }
-
-    // Helper method to place a missing type
-    private void placeMissingTypeIfNeeded(boolean isMissing, CellType type) {
-        if (!isMissing) return;
-        int maxAttempts = 100;
-        for (int attempt = 0; attempt < maxAttempts; attempt++) {
+        // Add market areas
+        int Markets = 5;
+        int placedMarkets = 0;
+        // Place markets randomly in the grid
+        while (placedMarkets < Markets) {
             int r = RandomUtil.randomLevel(0, rows - 1);
             int c = RandomUtil.randomLevel(0, cols - 1);
-            if (grid[r][c] != type) {
-                grid[r][c] = type;
-                return;
+            if (grid[r][c] == CellType.COMMON) {
+                grid[r][c] = CellType.MARKET;
+                placedMarkets++;
+            }
+        }
+
+        // Add NON_ACCESSIBLE cells
+        int NonAccessible = 10;
+        int placedNonAccessible = 0;
+        while (placedNonAccessible < NonAccessible) {
+            int r = RandomUtil.randomLevel(0, rows - 1);
+            int c = RandomUtil.randomLevel(0, cols - 1);
+            if (grid[r][c] == CellType.COMMON) {
+                grid[r][c] = CellType.NON_ACCESSIBLE;
+                placedNonAccessible++;
+            }
+        }
+
+        // Add FIGHT cells
+        int Fights = 8;
+        int placedFights = 0;
+        while (placedFights < Fights) {
+            int r = RandomUtil.randomLevel(0, rows - 1);
+            int c = RandomUtil.randomLevel(0, cols - 1);
+            if (grid[r][c] == CellType.COMMON) {
+                grid[r][c] = CellType.FIGHT;
+                placedFights++;
             }
         }
     }

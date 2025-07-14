@@ -27,7 +27,10 @@ public class GameEngine {
         System.out.println("You will explore mysterious lands, battle fearsome monsters, and visit bustling markets.");
         System.out.println("May fortune and courage guide your journey!\n");
 
-        initializeGrid();
+        // Initialize the grid
+        grid = new Grid();
+
+        // Initialize player and heroes
         initializePlayerAndHeroes();
 
         System.out.println("\n--- Your Team's Initial Status ---");
@@ -37,74 +40,69 @@ public class GameEngine {
         mainGameLoop();
     }
 
-    private void initializeGrid() {
-        System.out.print("Enter grid rows: ");
-        int rows = Integer.parseInt(scanner.nextLine());
-        System.out.print("Enter grid columns: ");
-        int cols = Integer.parseInt(scanner.nextLine());
-        grid = new Grid(rows, cols);
-    }
 
     private void initializePlayerAndHeroes() {
         System.out.print("Enter your player name: ");
         String playerName = scanner.nextLine();
-        int startRow = 0, startCol = 0;
+
+        // Start the player in the center of the grid
+        int startRow = grid.getRows() / 2;
+        int startCol = grid.getCols() / 2;
         player = new Player(playerName, startRow, startCol);
 
-        int numHeroes = 0;
+        // Ask for number of heroes (1–3)
+        int numHeroes;
         while (true) {
             System.out.print("How many heroes in your team? (1–3): ");
-            try {
-                numHeroes = Integer.parseInt(scanner.nextLine());
-                if (numHeroes >= 1 && numHeroes <= 3) {
-                    break;
-                } else {
-                    System.out.println("You must choose between 1 and 3 heroes. Try again.");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number between 1 and 3.");
+            String input = scanner.nextLine();
+            if (input.equals("1") || input.equals("2") || input.equals("3")) {
+                numHeroes = Integer.parseInt(input);
+                break;
             }
+            System.out.println("You must choose between 1 and 3 heroes. Try again.");
         }
 
+        // Initialize heroes
         for (int i = 1; i <= numHeroes; i++) {
+            // Choose hero name and type
             System.out.print("Enter name for Hero " + i + ": ");
             String heroName = scanner.nextLine();
+
             int type = 0;
             while (true) {
-                System.out.println("Choose hero type for " + heroName + ": 1) Warrior 2) Sorcerer 3) Paladin");
-                try {
-                    type = Integer.parseInt(scanner.nextLine());
-                    if (type >= 1 && type <= 3) {
-                        break;
-                    } else {
-                        System.out.println("Error: Invalid hero type. Please enter 1, 2, or 3.");
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("Error: Please enter a valid number.");
+                System.out.print("Choose hero type for " + heroName + ": 1) Warrior 2) Sorcerer 3) Paladin: ");
+                String input = scanner.nextLine();
+                if (input.equals("1") || input.equals("2") || input.equals("3")) {
+                    type = Integer.parseInt(input);
+                    break;
                 }
+                System.out.println("Error: Invalid hero type. Please enter 1, 2, or 3.");
             }
+
+            // Create the hero based on the chosen type
             Hero hero;
-            switch (type) {
-                case 1:
-                    hero = new Warrior(heroName);
-                    break;
-                case 2:
-                    hero = new Sorcerer(heroName);
-                    break;
-                case 3:
-                    hero = new Paladin(heroName);
-                    break;
-                default:
-                    hero = new Warrior(heroName); // This default is unreachable
+            if (type == 1) {
+                hero = new Warrior(heroName);
             }
-            player.addHero(hero);
+            else if (type == 2) {
+                hero = new Sorcerer(heroName);
+            }
+            else if (type == 3) {
+                hero = new Paladin(heroName);
+            }
+            else {
+                hero = null;
+            }
+
+            // Add the hero to the player's party
+            player.getParty().add(hero);
         }
     }
 
     private void mainGameLoop() {
         // --- Starting Market Phase ---
         Market market = new Market();
-        market.openStartingMarket(player); // Player immediately enters the market
+        market.openMarket(player); // Player immediately enters the market
 
         // Show the team's status after shopping
         System.out.println("\n--- Your Team's Status After Shopping ---");
@@ -141,7 +139,7 @@ public class GameEngine {
             switch (cellType) {
                 case FIGHT:
                     System.out.println("A wild monster appears! Prepare for battle!");
-                    Fight fight = new Fight(player.getHeroes(), 3);
+                    Fight fight = new Fight(player.getParty(), 3);
                     fight.startBattle();
                     break;
 
@@ -165,7 +163,7 @@ public class GameEngine {
                         switch (choice) {
                             case 1:
                                 // 1. Hero selection
-                                List<Hero> heroes = player.getHeroes();
+                                List<Hero> heroes = player.getParty();
                                 System.out.println("Choose a hero to buy for:");
                                 for (int i = 0; i < heroes.size(); i++) {
                                     System.out.println((i + 1) + ". " + heroes.get(i).getLivingName() + " (Gold: " + heroes.get(i).getMoney() + ")");
@@ -198,16 +196,16 @@ public class GameEngine {
                                 }
 
                                 boolean purchaseSuccess = false;
-                                if (productChoice >= 0 && productChoice < items.size()) {
-                                    Item itemToBuy = items.get(productChoice);
-                                    purchaseSuccess = market.buyItem(selectedHero, itemToBuy);
-                                } else if (productChoice >= items.size() && productChoice < items.size() + spells.size()) {
-                                    Spell spellToBuy = spells.get(productChoice - items.size());
-                                    purchaseSuccess = market.buySpell(selectedHero, spellToBuy);
-                                } else {
-                                    System.out.println("Invalid selection. Returning to market menu.");
-                                    break;
-                                }
+//                                if (productChoice >= 0 && productChoice < items.size()) {
+//                                    Item itemToBuy = items.get(productChoice);
+//                                    purchaseSuccess = market.buyItem(selectedHero, itemToBuy);
+//                                } else if (productChoice >= items.size() && productChoice < items.size() + spells.size()) {
+//                                    Spell spellToBuy = spells.get(productChoice - items.size());
+//                                    purchaseSuccess = market.buySpell(selectedHero, spellToBuy);
+//                                } else {
+//                                    System.out.println("Invalid selection. Returning to market menu.");
+//                                    break;
+//                                }
 
                                 if (purchaseSuccess) {
                                     System.out.println("Purchase successful!");
@@ -215,61 +213,9 @@ public class GameEngine {
                                     System.out.println("Purchase failed: insufficient level or money.");
                                 }
                                 break;
-
-//                            case 1:
-//                                // 1. Hero selection
-//                                List<Hero> heroes = player.getHeroes();
-//                                System.out.println("Choose a hero to buy for:");
-//                                for (int i = 0; i < heroes.size(); i++) {
-//                                    System.out.println((i + 1) + ". " + heroes.get(i).getLivingName() + " (Gold: " + heroes.get(i).getMoney() + ")");
-//                                }
-//                                int heroChoice;
-//                                try {
-//                                    heroChoice = Integer.parseInt(scanner.nextLine()) - 1;
-//                                } catch (NumberFormatException e) {
-//                                    System.out.println("Invalid input. Returning to market menu.");
-//                                    break;
-//                                }
-//                                if (heroChoice < 0 || heroChoice >= heroes.size()) {
-//                                    System.out.println("Invalid hero selection. Returning to market menu.");
-//                                    break;
-//                                }
-//                                Hero selectedHero = heroes.get(heroChoice);
-//
-//                                // 2. Product selection
-//                                List<Item> items = market.getAvailableItems();
-//                                List<Spell> spells = market.getAvailableSpells();
-//                                System.out.println("Available Items and Spells:");
-//                                market.displayAvailableItemsAndSpells();
-//                                System.out.print("Enter the number of the item/spell to buy: ");
-//                                int productChoice;
-//                                try {
-//                                    productChoice = Integer.parseInt(scanner.nextLine()) - 1;
-//                                } catch (NumberFormatException e) {
-//                                    System.out.println("Invalid input. Returning to market menu.");
-//                                    break;
-//                                }
-//                                Object selectedProduct;
-//                                if (productChoice >= 0 && productChoice < items.size()) {
-//                                    selectedProduct = items.get(productChoice);
-//                                } else if (productChoice >= items.size() && productChoice < items.size() + spells.size()) {
-//                                    selectedProduct = spells.get(productChoice - items.size());
-//                                } else {
-//                                    System.out.println("Invalid selection. Returning to market menu.");
-//                                    break;
-//                                }
-//
-//                                // 3. Attempt purchase
-//                                boolean success = market.buy(selectedHero, selectedProduct);
-//                                if (success) {
-//                                    System.out.println("Purchase successful!");
-//                                } else {
-//                                    System.out.println("Purchase failed: insufficient level or money.");
-//                                }
-//                                break;
                             case 2:
                                 // 1. Hero selection
-                                heroes = player.getHeroes();
+                                heroes = player.getParty();
                                 System.out.println("Choose a hero to sell from:");
                                 for (int i = 0; i < heroes.size(); i++) {
                                     System.out.println((i + 1) + ". " + heroes.get(i).getLivingName() + " (Gold: " + heroes.get(i).getMoney() + ")");
@@ -364,7 +310,7 @@ public class GameEngine {
                         input = scanner.nextLine();
                         switch (input) {
                             case "1":
-                                for (Hero hero : player.getHeroes()) {
+                                for (Hero hero : player.getParty()) {
                                     System.out.println(hero.getLivingName() + "'s Inventory:");
                                     hero.getInventory().checkInventory();
                                 }

@@ -8,9 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
+    // Variables
     private String playerName;
     private ArrayList<Hero> party;         // The player's team of heroes (at least 1 and max 3)
     private int currentRow, currentCol;    // Position on the grid
+
+    // Functions
 
     // Constructor
     public Player(String playerName, int startRow, int startCol) {
@@ -19,6 +22,7 @@ public class Player {
         this.currentRow = startRow;
         this.currentCol = startCol;
     }
+
     //Move player's team of heroes around the grid
     public boolean move(String direction, Grid grid) {
         int newRow = currentRow;
@@ -34,7 +38,7 @@ public class Player {
                 return false;
         }
 
-        if (newRow < 0 || newRow >= grid.rows || newCol < 0 || newCol >= grid.cols) {
+        if (newRow < 0 || newRow >= grid.getRows() || newCol < 0 || newCol >= grid.getCols()) {
             System.out.println("Out of bounds! Cannot move there.");
             return false;
         }
@@ -69,15 +73,7 @@ public class Player {
         }
     }
     // Methods to manage heroes
-    public void addHero(Hero hero) {
-        if (party.size() < 3) {
-            party.add(hero);
-        } else {
-            System.out.println("You cannot have more than 3 heroes in your team!");
-        }
-    }
     public void removeHero(Hero hero) { party.remove(hero); }
-    public ArrayList<Hero> getParty() { return party; }
 
     // Grid position
     public int getCurrentRow() { return currentRow; }
@@ -162,7 +158,7 @@ public class Player {
         this.currentCol = currentCol;
     }
 
-    public List<Hero> getHeroes() {
+    public List<Hero> getParty() {
         return  party;
     }
 }
