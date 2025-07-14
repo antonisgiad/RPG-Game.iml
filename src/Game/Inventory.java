@@ -14,10 +14,12 @@ public class Inventory {
     private List<Spell> spells; // Spells owned by the player
     private Weapon equippedWeapon;
     private Armor equippedArmor;
+    private int usedHands; // Number of hands currently used by equipped items
     // Constructor
     public Inventory() {
         this.items = new ArrayList<>();
         this.spells = new ArrayList<>();
+        this.usedHands = 0;
     }
 
     //Display heroes items and spells
@@ -59,12 +61,18 @@ public class Inventory {
             System.out.println("Not enough hands to equip this weapon.");
             return false;
         }
+        if (usedHands + weapon.getHands() > 2) {
+            System.out.println("Not enough free hands to equip this weapon.");
+            return false;
+        }
         // Attempt to remove the weapon from the hero's inventory before equipping it.
         if (!this.removeItem(weapon)) {
             System.out.println("Failed to remove the weapon from inventory.");
             return false;
         }
         this.equippedWeapon = weapon;
+        usedHands += weapon.getHands(); // Update used hands only if the weapon was successfully removed
+        System.out.println("Equipped weapon: " + weapon.getItemName() + ". Hands used: " + usedHands);
         return true;
     }
 

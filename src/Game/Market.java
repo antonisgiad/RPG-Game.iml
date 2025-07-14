@@ -42,8 +42,8 @@ public class Market {
 
         // Weapons
         items.add(new Weapon("Short Sword", 15.0, 1, 8.0, 1));
-        items.add(new Weapon("Long Bow", 30.0, 2, 12.0, 2));
-        items.add(new Weapon("Battle Axe", 50.0, 3, 20.0, 2));
+        items.add(new Weapon("Long Bow", 30.0, 1, 12.0, 2));
+        items.add(new Weapon("Battle Axe", 50.0, 1, 20.0, 2));
 
         return items;
     }
@@ -451,7 +451,7 @@ public class Market {
                                 }
                                 // Equip the selected weapon
                                 boolean equippedW = selectedHero.getInventory().equipWeapon(weapons.get(wChoice - 1), selectedHero, weapons.get(wChoice - 1).getHands());
-                                System.out.println(equippedW ? "Equipped: " + weapons.get(wChoice - 1).getItemName() + "!" : "Could not equip this weapon.");
+                                System.out.println(equippedW ? "Equipped: " + weapons.get(wChoice - 1).getItemName() + "!" : "Cannot equip weapon: hands are full.");
 
                                 break;
                             case 2: // Armor
@@ -476,6 +476,7 @@ public class Market {
                             default:
                                 System.out.println("Invalid type choice.");
                         }
+                        break;
                     case "3":
                         selectedHero.getInventory().checkInventory();
                         break;
