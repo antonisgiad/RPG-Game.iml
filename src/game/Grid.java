@@ -1,4 +1,4 @@
-package Game;
+package game;
 
 import utils.RandomUtil;
 
@@ -65,22 +65,57 @@ public class Grid {
             }
         }
     }
-
-    public void displayGrid(Player player) {
+    // Method to return the first market cell coordinates
+    public int[] getFirstMarketCell() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                if (i == player.getCurrentRow() && j == player.getCurrentCol()) {
-                    System.out.print("P ");
-                } else {
-                    switch (grid[i][j]) {
-                        case MARKET: System.out.print("M "); break;
-                        case FIGHT: System.out.print("F "); break;
-                        case COMMON: System.out.print("C "); break;
-                        case NON_ACCESSIBLE: System.out.print("X "); break;
-                    }
+                if (grid[i][j] == CellType.MARKET) {
+                    return new int[]{i, j};
                 }
             }
-            System.out.println();
+        }
+        // Fallback to center if no market is found.
+        return new int[]{rows / 2, cols / 2};
+    }
+
+    public void displayGrid(Player player) {
+        // Print top border
+        String horizontalBorder = "+";
+        for (int j = 0; j < cols; j++) {
+            horizontalBorder += "---+";
+        }
+        System.out.println(horizontalBorder);
+
+        for (int i = 0; i < rows; i++) {
+            StringBuilder row = new StringBuilder("|");
+            for (int j = 0; j < cols; j++) {
+                String cell;
+                if (i == player.getCurrentRow() && j == player.getCurrentCol()) {
+                    // ANSI escape for bright green text for player's position
+                    cell = "\033[1;32mP\033[0m";
+                } else {
+                    switch (grid[i][j]) {
+                        case MARKET:
+                            cell = "M";
+                            break;
+                        case FIGHT:
+                            cell = "F";
+                            break;
+                        case COMMON:
+                            cell = "C";
+                            break;
+                        case NON_ACCESSIBLE:
+                            cell = "X";
+                            break;
+                        default:
+                            cell = " ";
+                            break;
+                    }
+                }
+                row.append(" " + cell + " |");
+            }
+            System.out.println(row);
+            System.out.println(horizontalBorder);
         }
     }
 

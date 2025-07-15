@@ -11,12 +11,11 @@ public class IceSpell extends Spell {
     //Functions
 
     //Constructor
-    public IceSpell(String spellName) {
-        super(spellName);
-        this.maxDamage = this.minDamage + RandomUtil.randomStat(10, 25);
-        this.damageRange = new double[] { this.minDamage, this.maxDamage };
-        this.rangeReductionPercentage = RandomUtil.randomStat(0.2, 0.5);        // 20%–50% reduction
-        this.iceSpellDamageDealt = RandomUtil.randomStat(this.minDamage, this.maxDamage);
+    public IceSpell(String spellName, double spellCost, double magicPowerRequired, int spellMinLevel,
+                    double rangeReductionPercentage, double iceSpellDamageDealt) {
+        super(spellName, spellCost, magicPowerRequired, spellMinLevel);
+        this.rangeReductionPercentage = rangeReductionPercentage;
+        this.iceSpellDamageDealt = iceSpellDamageDealt;
     }
 
     // Damage dealt by ice spell
@@ -34,20 +33,14 @@ public class IceSpell extends Spell {
     public void reduceEnemyDamageRange(Monster enemy, int rounds) {
         // Save original damage range only if there is not already active effect
         if (enemy.getIceRoundsLeft() == 0) {
-            double originalMinDamage = enemy.getMinDamage();
-            double originalMaxDamage = enemy.getMaxDamage();
-            originalMinDamage = enemy.getMinDamage();
-            originalMaxDamage = enemy.getMaxDamage();
+            enemy.setMonsterDamageRange(enemy.getOriginalDamageRange()); // reset to original value
         }
-        //Calculate new range
-        double newMin = enemy.getMinDamage() * (1 - rangeReductionPercentage);
-        double newMax = enemy.getMaxDamage() * (1 - rangeReductionPercentage);
-        enemy.setMinDamage(newMin);
-        enemy.setMaxDamage(newMax);
-        int iceRoundsLeft = enemy.getIceRoundsLeft();
-        iceRoundsLeft = rounds;
-
-        System.out.println("IceSpell has reduced enemy's damage range by " + (int)(rangeReductionPercentage * 100) + "% for " + rounds + " rounds.");
+        // Calculate the new damage range
+        double newDamageRange = enemy.getMonsterDamageRange() * (1 - rangeReductionPercentage);
+        enemy.setMonsterDamageRange(newDamageRange);
+        enemy.setIceRoundsLeft(rounds);
+        System.out.println(this.getSpellName() + " reduced enemy damage range by " +
+                (int)(rangeReductionPercentage * 100) + "% for " + rounds + " rounds.");
     }
 
     //Getters & Setters

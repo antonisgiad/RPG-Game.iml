@@ -8,8 +8,8 @@ public class Warrior extends Hero {
     //Constructor
     public Warrior(String livingName) {
         super(livingName);
-        this.strength = 20; // Fully random
-        this.agility = 15;  // Fully random
+        this.strength = 6.5; // Fully random
+        this.agility = 5.5;  // Fully random
     }
 
     //Override levelUp from Hero

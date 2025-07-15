@@ -8,7 +8,7 @@ public class Paladin extends Hero {
     //Constructor
     public Paladin(String livingName) {
         super(livingName);
-        this.strength = 20;
-        this.dexterity = 12;
+        this.strength = 6;
+        this.dexterity = 7;
     }
 }

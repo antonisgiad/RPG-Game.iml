@@ -5,29 +5,27 @@ import utils.RandomUtil;
 
 public class Monster extends Living {
     //Variables
-    private double defense, dodgeChance, originalDefense, originalDodgeChance; //originals used in spell subclasses check there
-    private double[] damageRange, originalDamageRange;
+    private double defense, dodgeChance, monsterDamageRange, originalDamageRange, originalDefense, originalDodgeChance;
     private int iceRoundsLeft = 0, fireRoundsLeft = 0, lightningRoundsLeft = 0; //check spell subclasses
 
     //Functions
+
     //Constructor
     public Monster(String livingName) {
         super(livingName);
-        this.defense = 20;
-        this.dodgeChance = 0.1;
-        this.damageRange = new double[]{100, 200};
+        this.defense = RandomUtil.randomStat(1, 5); // Random defense between 5 and 15
+        this.dodgeChance = RandomUtil.randomStat(0.05, 0.1 ); // Random dodge chance between 5% and 10%
+        this.monsterDamageRange = RandomUtil.randomStat(3, 5); // Random damage range between 3 and 5
     }
 
-    //...........call updateIce/Fire/Lightning Effect() on each round on fight class!!!.............
-
+    // TODO call updateIce/Fire/Lightning Effect() on each round on fight class!!!
 
     // Every round check Ice Spell debuff (check ice spell class):
     public void updateIceEffect() {
         if (iceRoundsLeft > 0) {
             iceRoundsLeft--;
             if (iceRoundsLeft == 0) {
-                damageRange[0] = originalDamageRange[0]; // reset min damage
-                damageRange[1] = originalDamageRange[1]; // reset max damage
+                monsterDamageRange = originalDamageRange; // reset  damageRange to original value
             }
         }
     }
@@ -52,35 +50,75 @@ public class Monster extends Living {
         }
     }
     //Getters & Setters
-    public double getDefense() {return defense;}
+    public double getDefense() {
+        return defense;
+    }
 
-    public void setDefense(double defense) {this.defense = defense;}
+    public void setDefense(double defense) {
+        this.defense = defense;
+    }
 
-    public double getDodgeChance() {return dodgeChance;}
+    public double getDodgeChance() {
+        return dodgeChance;
+    }
 
-    public void setDodgeChance(double dodgeChance) {this.dodgeChance = dodgeChance;}
+    public void setDodgeChance(double dodgeChance) {
+        this.dodgeChance = dodgeChance;
+    }
 
-    public double[] getDamageRange() {return damageRange;}
+    public double getMonsterDamageRange() {
+        return monsterDamageRange;
+    }
 
-    public void setDamageRange(double[] damageRange) {this.damageRange = damageRange;}
-    //For the min and max values of damage range
-    public double getMinDamage() { return damageRange[0]; }
+    public void setMonsterDamageRange(double monsterDamageRange) {
+        this.monsterDamageRange = monsterDamageRange;
+    }
 
-    public void setMinDamage(double minDamage) {this.damageRange[0] = minDamage;}
+    public double getOriginalDefense() {
+        return originalDefense;
+    }
 
-    public double getMaxDamage() { return damageRange[1]; }
+    public void setOriginalDefense(double originalDefense) {
+        this.originalDefense = originalDefense;
+    }
 
-    public void setMaxDamage(double maxDamage) {this.damageRange[1] = maxDamage;}
+    public double getOriginalDodgeChance() {
+        return originalDodgeChance;
+    }
 
-    public int getIceRoundsLeft() {return iceRoundsLeft;}
+    public void setOriginalDodgeChance(double originalDodgeChance) {
+        this.originalDodgeChance = originalDodgeChance;
+    }
 
-    public void setIceRoundsLeft(int iceRoundsLeft) {this.iceRoundsLeft = iceRoundsLeft;}
+    public double getOriginalDamageRange() {
+        return originalDamageRange;
+    }
 
-    public int getFireRoundsLeft() {return fireRoundsLeft;}
+    public void setOriginalDamageRange(double originalDamageRange) {
+        this.originalDamageRange = originalDamageRange;
+    }
 
-    public void setFireRoundsLeft(int fireRoundsLeft) {this.fireRoundsLeft = fireRoundsLeft;}
+    public int getIceRoundsLeft() {
+        return iceRoundsLeft;
+    }
 
-    public int getLightningRoundsLeft() {return lightningRoundsLeft;}
+    public void setIceRoundsLeft(int iceRoundsLeft) {
+        this.iceRoundsLeft = iceRoundsLeft;
+    }
 
-    public void setLightningRoundsLeft(int lightningRoundsLeft) {this.lightningRoundsLeft = lightningRoundsLeft;}
+    public int getFireRoundsLeft() {
+        return fireRoundsLeft;
+    }
+
+    public void setFireRoundsLeft(int fireRoundsLeft) {
+        this.fireRoundsLeft = fireRoundsLeft;
+    }
+
+    public int getLightningRoundsLeft() {
+        return lightningRoundsLeft;
+    }
+
+    public void setLightningRoundsLeft(int lightningRoundsLeft) {
+        this.lightningRoundsLeft = lightningRoundsLeft;
+    }
 }

@@ -4,12 +4,22 @@ import utils.RandomUtil;
 
 public class Exoskeleton extends Monster {
     //Variables
-    double increasedDefense;
+    private double increasedDefense;
 
     //Functions
+
     //Constructor
-    public Exoskeleton(String livingName) {
+    public Exoskeleton(String livingName, double increasedDefense) {
         super(livingName);
-        this.increasedDefense = RandomUtil.randomStat(10, 25) + getDefense(); // Fully random
+        this.increasedDefense = increasedDefense + getDefense();
+    }
+
+    //Getters & Setters
+    public double getIncreasedDefense() {
+        return increasedDefense;
+    }
+
+    public void setIncreasedDefense(double increasedDefense) {
+        this.increasedDefense = increasedDefense;
     }
 }

@@ -1,6 +1,6 @@
 package item;
 
-import Game.Inventory;
+import game.Inventory;
 import living.heroes.Hero;
 
 public class Potion extends Item {

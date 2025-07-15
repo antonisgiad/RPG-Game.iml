@@ -1,10 +1,8 @@
 package living.heroes;
 
-import Game.Inventory;
+import game.Inventory;
 import living.Living;
-import living.monster.Monster;
 import spell.Spell;
-import utils.RandomUtil;
 
 public class Hero extends Living {
     //Variables
@@ -16,11 +14,11 @@ public class Hero extends Living {
     //Constructor
     public Hero(String livingName) {
         super(livingName);
-        this.magicPower = 5;
-        this.strength = 8;
-        this.dexterity = 6;
-        this.agility = 6;
-        this.money = 200;
+        this.magicPower = 4;
+        this.strength = 2;
+        this.dexterity = 3;
+        this.agility = 3;
+        this.money = 100;
         this.experience = 0;
         this.inventory = new Inventory();
     }
@@ -33,12 +31,10 @@ public class Hero extends Living {
         int dexterityBonus = (int) (this.dexterity / 10);
 
         // Increase spell's damage range
-        spell.setMinDamage(spell.getMinDamage() + dexterityBonus);
-        spell.setMaxDamage(spell.getMaxDamage() + dexterityBonus);
 
         // Set new spell damage range (affected by dexterity)
-        double[] newDamageRange = {spell.getMinDamage(), spell.getMaxDamage()};
-        spell.setDamageRange(newDamageRange);
+        double newDamageRange = spell.getSpellDamageRange() + dexterityBonus;
+        spell.setSpellDamageRange(newDamageRange);
 
         System.out.println("Spell's damage range has been increased by +" + dexterityBonus + "!");
     }

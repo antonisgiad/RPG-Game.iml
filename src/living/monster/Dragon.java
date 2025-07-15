@@ -1,19 +1,23 @@
 package living.monster;
 
-import utils.RandomUtil;
-
 public class Dragon extends Monster {
     //Variables
-    double increasedMinDamage, increasedMaxDamage;
-    double[] increasedDamageRange = {increasedMinDamage, increasedMaxDamage};
+    private double increasedDamageRange;
 
     //Functions
+
     //Constructor
-    public Dragon(String livingName) {
+    public Dragon(String livingName, double increasedDamageRange) {
         super(livingName);
-        // Randomly generate increased min/max damage for the Dragon
-        this.increasedMinDamage = RandomUtil.randomStat(15, 35) + getMinDamage(); // Fully random
-        this.increasedMaxDamage = RandomUtil.randomStat(25, 50) +  getMaxDamage(); // Fully random
-        this.increasedDamageRange = new double[] {increasedMinDamage, increasedMaxDamage};
+        this.increasedDamageRange = increasedDamageRange + getMonsterDamageRange();
+    }
+
+    //Getters & Setters
+    public double getIncreasedDamageRange() {
+        return increasedDamageRange;
+    }
+
+    public void setIncreasedDamageRange(double increasedDamageRange) {
+        this.increasedDamageRange = increasedDamageRange;
     }
 }

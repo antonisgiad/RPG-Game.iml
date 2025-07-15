@@ -6,16 +6,15 @@ import utils.RandomUtil;
 
 public class FireSpell extends Spell {
     //Variables
-    double fireSpellDamageDealt, rangeReductionPercentage;
+    private double fireSpellDamageDealt, defenseReductionPercentage;
 
     //Functions
     //Constructor
-    public FireSpell(String spellName) {
-        super(spellName);
-        this.maxDamage = this.minDamage + RandomUtil.randomStat(10, 25);
-        this.damageRange = new double[] { this.minDamage, this.maxDamage };
-        this.fireSpellDamageDealt = RandomUtil.randomStat(this.minDamage, this.maxDamage);
-        this.rangeReductionPercentage = RandomUtil.randomStat(0.1, 0.4); // 10%–40% reduction
+    public FireSpell(String spellName, double spellCost, double magicPowerRequired, int spellMinLevel,
+                     double fireSpellDamageDealt, double defenseReductionPercentage) {
+        super(spellName, spellCost, magicPowerRequired, spellMinLevel);
+        this.fireSpellDamageDealt = fireSpellDamageDealt;
+        this.defenseReductionPercentage = defenseReductionPercentage;
     }
 
     // Damage dealt by fire spell
@@ -30,18 +29,32 @@ public class FireSpell extends Spell {
     }
 
     // Fire Spell debuff for couple rounds (check monster class)
-    public void reduceEnemyDefense(Monster enemy, int rounds, double defenseReductionPercent) {
+    public void reduceEnemyDefense(Monster enemy, int rounds) {
         // Save original defense only if there is not already active effect
         if (enemy.getFireRoundsLeft() == 0) {
-            double originalDefense = enemy.getDefense();
-            originalDefense = enemy.getDefense();
+            enemy.setDefense(enemy.getOriginalDefense()); // reset to original value
         }
         //Calculate new defense
-        double newDefense = enemy.getDefense() * (1 - defenseReductionPercent);
+        double newDefense = enemy.getDefense() * (1 - defenseReductionPercentage);
         enemy.setDefense(newDefense);
-        int fireRoundsLeft = enemy.getFireRoundsLeft();
-        fireRoundsLeft = rounds;
+        enemy.setFireRoundsLeft(rounds);
+        System.out.println("FireSpell has reduced enemy's defense by " + (int)(defenseReductionPercentage * 100) + "% for " + rounds + " rounds.");
+    }
 
-        System.out.println("FireSpell has reduced enemy's defense by " + (int)(defenseReductionPercent * 100) + "% for " + rounds + " rounds.");
+    // Getters & Setters
+    public double getFireSpellDamageDealt() {
+        return fireSpellDamageDealt;
+    }
+
+    public void setFireSpellDamageDealt(double fireSpellDamageDealt) {
+        this.fireSpellDamageDealt = fireSpellDamageDealt;
+    }
+
+    public double getDefenseReductionPercentage() {
+        return defenseReductionPercentage;
+    }
+
+    public void setDefenseReductionPercentage(double defenseReductionPercentage) {
+        this.defenseReductionPercentage = defenseReductionPercentage;
     }
 }

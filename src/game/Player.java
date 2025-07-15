@@ -1,8 +1,6 @@
-package Game;
+package game;
 
-import item.Item;
 import living.heroes.Hero;
-import spell.Spell;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,26 +50,6 @@ public class Player {
         return true;
     }
 
-    public void performCellAction(Grid grid) {
-        Grid.CellType cellType = grid.grid[currentRow][currentCol];
-        switch (cellType) {
-            case MARKET:
-                System.out.println("You have entered a Market! You can buy or sell items here.");
-                // Call market logic here
-                break;
-            case FIGHT:
-                System.out.println("A wild enemy appears! Prepare for battle.");
-                // Call battle logic here
-                break;
-            case COMMON:
-                System.out.println("This is a common area. You can rest or explore.");
-                // Add random events or resting logic here
-                break;
-            case NON_ACCESSIBLE:
-                System.out.println("This area is not accessible.");
-                break;
-        }
-    }
     // Methods to manage heroes
     public void removeHero(Hero hero) { party.remove(hero); }
 
@@ -84,11 +62,7 @@ public class Player {
     }
 
     // Display player stats
-    public void displayStats() {
-        System.out.println("Player: " + playerName);
-        System.out.println("Location: (" + currentRow + ", " + currentCol + ")");
-        System.out.println("Party:");
-
+    public void displayHeroesStatus() {
         for (Hero hero : party) {
             System.out.println("-------------------------------------------------");
             // Show hero type using getHeroType() or class name
@@ -103,41 +77,15 @@ public class Player {
             System.out.println("  Agility: " + hero.getAgility());
             System.out.println("  Money: " + hero.getMoney());
             System.out.println("  Experience: " + hero.getExperience());
-
-            // Display Items
-            System.out.print("  Items: ");
-            List<Item> items = hero.getInventory().getItems();
-            if (items.isEmpty()) {
-                System.out.print("None");
-            } else {
-                for (int i = 0; i < items.size(); i++) {
-                    System.out.print(items.get(i).getItemName());
-                    if (i < items.size() - 1) {
-                        System.out.print(", ");
-                    }
-                }
-            }
-            System.out.println();
-
-            // Display Spells
-            System.out.print("  Spells: ");
-            List<Spell> spells = hero.getInventory().getSpells();
-            if (spells.isEmpty()) {
-                System.out.print("None");
-            } else {
-                for (int i = 0; i < spells.size(); i++) {
-                    System.out.print(spells.get(i).getSpellName());
-                    if (i < spells.size() - 1) {
-                        System.out.print(", ");
-                    }
-                }
-            }
-            System.out.println();
+            System.out.println("-------------------------------------------------");
         }
-        System.out.println("-------------------------------------------------");
     }
 
     //Getters & Setters
+    public List<Hero> getParty() {
+        return  party;
+    }
+
     public String getPlayerName() {
         return playerName;
     }
@@ -156,9 +104,5 @@ public class Player {
 
     public void setCurrentCol(int currentCol) {
         this.currentCol = currentCol;
-    }
-
-    public List<Hero> getParty() {
-        return  party;
     }
 }

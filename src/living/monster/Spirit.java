@@ -4,13 +4,22 @@ import utils.RandomUtil;
 
 public class Spirit extends Monster {
     //Variables
-    double increasedDodgeChance;
+    private double increasedDodgeChance;
 
     //Functions
+
     //Constructor
-    public Spirit(String livingName) {
+    public Spirit(String livingName, double increasedDodgeChance) {
         super(livingName);
-        // Spirits are known for high dodge and magical attacks
-        this.increasedDodgeChance = RandomUtil.randomStat(0.15, 0.40) + getDodgeChance(); // Fully random
+        this.increasedDodgeChance = increasedDodgeChance + getDodgeChance();
+    }
+
+    //Getters & Setters
+    public double getIncreasedDodgeChance() {
+        return increasedDodgeChance;
+    }
+
+    public void setIncreasedDodgeChance(double increasedDodgeChance) {
+        this.increasedDodgeChance = increasedDodgeChance;
     }
 }

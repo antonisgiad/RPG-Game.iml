@@ -6,16 +6,16 @@ import utils.RandomUtil;
 
 public class LightningSpell extends Spell {
     //Variables
-    double lightningSpellDamageDealt, rangeReductionPercentage;
+    double lightningSpellDamageDealt, dodgeChanceReductionPercentage;
 
     //Functions
+
     //Constructor
-    public LightningSpell(String spellName) {
-        super(spellName);
-        this.maxDamage = this.minDamage + RandomUtil.randomStat(10, 25);
-        this.damageRange = new double[] {this.minDamage, this.maxDamage};
-        this.lightningSpellDamageDealt = RandomUtil.randomStat(this.minDamage, this.maxDamage);
-        this.rangeReductionPercentage = RandomUtil.randomStat(0.1, 0.4); // 10%–40% reduction
+    public LightningSpell(String spellName, double spellCost, double magicPowerRequired, int spellMinLevel,
+                          double lightningSpellDamageDealt, double rangeReductionPercentage) {
+        super(spellName, spellCost, magicPowerRequired, spellMinLevel);
+        this.lightningSpellDamageDealt = lightningSpellDamageDealt;
+        this.dodgeChanceReductionPercentage = rangeReductionPercentage;
     }
 
     // Damage dealt by lightning spell
@@ -30,29 +30,35 @@ public class LightningSpell extends Spell {
     }
 
     // Lightning Spell debuff for couple rounds (check monster class)
-    public void reduceEnemyDodgeChance(Monster enemy, int rounds, double dodgeReductionPercent) {
+    public void reduceEnemyDodgeChance(Monster enemy, int rounds) {
         // Save original dodge chance only if there is not already active effect
         if (enemy.getLightningRoundsLeft() == 0) {
             double originalDodgeChance = enemy.getDodgeChance();
             originalDodgeChance = enemy.getDodgeChance();
+            enemy.setDodgeChance(enemy.getOriginalDodgeChance()); // reset to original value
         }
-        double newDodgeChance = enemy.getDodgeChance() * (1 - dodgeReductionPercent);
+        // Calculate the new dodge chance
+        double newDodgeChance = enemy.getDodgeChance() * (1 - dodgeChanceReductionPercentage);
         enemy.setDodgeChance(newDodgeChance);
-        int lightningRoundsLeft = enemy.getLightningRoundsLeft();
-        lightningRoundsLeft = rounds;
+        enemy.setLightningRoundsLeft(rounds);
 
-        System.out.println("LightningSpell has reduced enemy's dodge chance by " + (int)(dodgeReductionPercent * 100) + "% for " + rounds + " rounds.");
+        System.out.println("LightningSpell has reduced enemy's dodge chance by " + (int)(dodgeChanceReductionPercentage * 100) + "% for " + rounds + " rounds.");
     }
-    // Lightning Spell debuff for couple rounds (check monster class)
-    public void reducedDodgeChance(Monster enemy) {
-        // Save original chance only if there is not already active effect
-        if (enemy.getLightningRoundsLeft() == 0) {
-            double originalDodgeChance = enemy.getDodgeChance();
-            originalDodgeChance = enemy.getDefense();
-        }
-        // Calculate new chance
-        double newChance = enemy.getDodgeChance() * (1 - rangeReductionPercentage);
 
-        System.out.println("LightningSpell has reduced enemy's dodge chance by " + (int)(rangeReductionPercentage * 100) + "%.");
+    //Getters & Setters
+    public double getLightningSpellDamageDealt() {
+        return lightningSpellDamageDealt;
+    }
+
+    public void setLightningSpellDamageDealt(double lightningSpellDamageDealt) {
+        this.lightningSpellDamageDealt = lightningSpellDamageDealt;
+    }
+
+    public double getDodgeChanceReductionPercentage() {
+        return dodgeChanceReductionPercentage;
+    }
+
+    public void setDodgeChanceReductionPercentage(double dodgeChanceReductionPercentage) {
+        this.dodgeChanceReductionPercentage = dodgeChanceReductionPercentage;
     }
 }

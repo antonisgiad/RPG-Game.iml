@@ -1,4 +1,4 @@
-import Game.GameEngine;
+import game.GameEngine;
 
 public class Main {
     public static void main(String[] args) {
