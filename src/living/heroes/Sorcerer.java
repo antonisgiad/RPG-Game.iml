@@ -8,7 +8,7 @@ public class Sorcerer extends Hero {
     //Constructor
     public Sorcerer(String livingName) {
         super(livingName);
-        this.agility = 5;
+        this.agility = 6.5;
         this.dexterity = 6;
     }
 }

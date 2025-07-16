@@ -27,12 +27,12 @@ public class Player {
         int newCol = currentCol;
 
         switch (direction.toLowerCase()) {
-            case "up":    newRow--; break;
-            case "down":  newRow++; break;
-            case "left":  newCol--; break;
-            case "right": newCol++; break;
+            case "w":    newRow--; break; // up
+            case "s":    newRow++; break; // down
+            case "a":    newCol--; break; // left
+            case "d":    newCol++; break; // right
             default:
-                System.out.println("Invalid direction! Use up, down, left, or right.");
+                System.out.println("Invalid direction! Use w (up), a (left), s (down), or d (right).");
                 return false;
         }
 
@@ -49,6 +49,34 @@ public class Player {
         System.out.println("Moved to (" + newRow + ", " + newCol + ")");
         return true;
     }
+
+//    public boolean move(String direction, Grid grid) {
+//        int newRow = currentRow;
+//        int newCol = currentCol;
+//
+//        switch (direction.toLowerCase()) {
+//            case "up":    newRow--; break;
+//            case "down":  newRow++; break;
+//            case "left":  newCol--; break;
+//            case "right": newCol++; break;
+//            default:
+//                System.out.println("Invalid direction! Use up, down, left, or right.");
+//                return false;
+//        }
+//
+//        if (newRow < 0 || newRow >= grid.getRows() || newCol < 0 || newCol >= grid.getCols()) {
+//            System.out.println("Out of bounds! Cannot move there.");
+//            return false;
+//        }
+//        if (grid.grid[newRow][newCol] == Grid.CellType.NON_ACCESSIBLE) {
+//            System.out.println("Cell is non-accessible! Cannot move there.");
+//            return false;
+//        }
+//
+//        moveTo(newRow, newCol);
+//        System.out.println("Moved to (" + newRow + ", " + newCol + ")");
+//        return true;
+//    }
 
     // Methods to manage heroes
     public void removeHero(Hero hero) { party.remove(hero); }

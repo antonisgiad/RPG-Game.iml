@@ -15,9 +15,9 @@ public class Hero extends Living {
     public Hero(String livingName) {
         super(livingName);
         this.magicPower = 4;
-        this.strength = 2;
-        this.dexterity = 3;
-        this.agility = 3;
+        this.strength = 5;
+        this.dexterity = 4;
+        this.agility = 5;
         this.money = 100;
         this.experience = 0;
         this.inventory = new Inventory();
@@ -64,6 +64,16 @@ public class Hero extends Living {
             System.out.println("Strength increased to: " + strength);
             System.out.println("Dexterity increased to: " + dexterity);
             System.out.println("Agility increased to: " + agility);
+        }
+    }
+
+    // Regenerate health after battle
+    public void regenerateHealthAfterBattle() {
+        if (this.getHealthPower() <= 0) {
+            // Reset health to half of standard value (10)
+            this.setHealthPower(5);
+            System.out.println(this.getLivingName() + " has regenerated to 5 health points after battle.");
+            this.setPassedOut(false); // Reset passed out status
         }
     }
 

@@ -116,7 +116,7 @@ public class GameEngine {
 
         // --- Main Game Loop ---
         while (true) {
-            System.out.print("Enter move (up/down/left/right), 'status', or 'exit': ");
+            System.out.print("Enter move (w/s/a/d), 'status', or 'exit': ");
             String input = scanner.nextLine();
 
             if (input.equalsIgnoreCase("exit")) {
@@ -369,9 +369,13 @@ public class GameEngine {
                     break;
 
                 case FIGHT:
-                    System.out.println("A wild monster appears! Prepare for battle!");
+                    System.out.println("A wild group of monsters appears! Prepare for battle!");
                     Fight fight = new Fight(player.getParty(), RandomUtil.randomLevel(1, 3));
                     fight.startBattle();
+                    // Regenerate health for heroes who reached 0 HP
+                    for (Hero hero : player.getParty()) {
+                        hero.regenerateHealthAfterBattle();
+                    }
                     break;
 
                 case NON_ACCESSIBLE:

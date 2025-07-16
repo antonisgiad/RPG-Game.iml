@@ -2,7 +2,6 @@ package spell;
 
 import living.heroes.Hero;
 import living.monster.Monster;
-import utils.RandomUtil;
 
 public class LightningSpell extends Spell {
     //Variables
@@ -33,8 +32,6 @@ public class LightningSpell extends Spell {
     public void reduceEnemyDodgeChance(Monster enemy, int rounds) {
         // Save original dodge chance only if there is not already active effect
         if (enemy.getLightningRoundsLeft() == 0) {
-            double originalDodgeChance = enemy.getDodgeChance();
-            originalDodgeChance = enemy.getDodgeChance();
             enemy.setDodgeChance(enemy.getOriginalDodgeChance()); // reset to original value
         }
         // Calculate the new dodge chance

@@ -1,7 +1,5 @@
 package living.monster;
 
-import utils.RandomUtil;
-
 public class Exoskeleton extends Monster {
     //Variables
     private double increasedDefense;

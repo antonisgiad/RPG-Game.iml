@@ -19,7 +19,6 @@ public class Living {
     public boolean passedOut() {
         if (healthPower <= 0) {
             isPassedOut = true;
-            System.out.println(livingName + " has passed out...");
         } else {
             isPassedOut = false;
         }
